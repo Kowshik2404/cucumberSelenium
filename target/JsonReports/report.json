@@ -1,0 +1,143 @@
+[ {
+  "line" : 3,
+  "elements" : [ {
+    "start_timestamp" : "2022-06-17T12:01:20.499Z",
+    "line" : 7,
+    "name" : "To verify that user is able to login into Application with valid creds",
+    "description" : "",
+    "id" : "login-into-application;to-verify-that-user-is-able-to-login-into-application-with-valid-creds",
+    "type" : "scenario",
+    "keyword" : "Scenario",
+    "steps" : [ {
+      "result" : {
+        "duration" : 4985900,
+        "status" : "passed"
+      },
+      "line" : 8,
+      "name" : "I open the login page URL",
+      "match" : {
+        "location" : "Implementation.LoginSteps.openLoginURL()"
+      },
+      "keyword" : "Given "
+    }, {
+      "result" : {
+        "status" : "passed"
+      },
+      "line" : 9,
+      "name" : "I enter the username in username field",
+      "match" : {
+        "location" : "Implementation.LoginSteps.enterEmailInEmailField()"
+      },
+      "keyword" : "When "
+    }, {
+      "result" : {
+        "duration" : 997200,
+        "status" : "passed"
+      },
+      "line" : 10,
+      "name" : "I enter the password in password name field",
+      "match" : {
+        "location" : "Implementation.LoginSteps.enterPasswordInPasswordField()"
+      },
+      "keyword" : "And "
+    }, {
+      "result" : {
+        "status" : "passed"
+      },
+      "line" : 11,
+      "name" : "I click Login button",
+      "match" : {
+        "location" : "Implementation.LoginSteps.clickONLoginButton()"
+      },
+      "keyword" : "And "
+    }, {
+      "result" : {
+        "duration" : 998500,
+        "status" : "passed"
+      },
+      "line" : 12,
+      "name" : "I should be navigated to home page",
+      "match" : {
+        "location" : "Implementation.LoginSteps.verifyThatHomePageIsLoading()"
+      },
+      "keyword" : "Then "
+    } ],
+    "tags" : [ {
+      "name" : "@Smoke1"
+    }, {
+      "name" : "@Smoke"
+    } ]
+  }, {
+    "start_timestamp" : "2022-06-17T12:01:20.577Z",
+    "line" : 16,
+    "name" : "To verify that user should not able to login into Application with invalid creds",
+    "description" : "",
+    "id" : "login-into-application;to-verify-that-user-should-not-able-to-login-into-application-with-invalid-creds",
+    "type" : "scenario",
+    "keyword" : "Scenario",
+    "steps" : [ {
+      "result" : {
+        "status" : "passed"
+      },
+      "line" : 17,
+      "name" : "I open the login page URL",
+      "match" : {
+        "location" : "Implementation.LoginSteps.openLoginURL()"
+      },
+      "keyword" : "Given "
+    }, {
+      "result" : {
+        "duration" : 997300,
+        "status" : "passed"
+      },
+      "line" : 18,
+      "name" : "I enter the username in username field",
+      "match" : {
+        "location" : "Implementation.LoginSteps.enterEmailInEmailField()"
+      },
+      "keyword" : "When "
+    }, {
+      "result" : {
+        "status" : "passed"
+      },
+      "line" : 19,
+      "name" : "I enter the password in password name field",
+      "match" : {
+        "location" : "Implementation.LoginSteps.enterPasswordInPasswordField()"
+      },
+      "keyword" : "And "
+    }, {
+      "result" : {
+        "status" : "passed"
+      },
+      "line" : 20,
+      "name" : "I click Login button",
+      "match" : {
+        "location" : "Implementation.LoginSteps.clickONLoginButton()"
+      },
+      "keyword" : "And "
+    }, {
+      "result" : {
+        "duration" : 998200,
+        "status" : "passed"
+      },
+      "line" : 21,
+      "name" : "I should be able see error message",
+      "match" : {
+        "location" : "Implementation.LoginSteps.verifyLoginErrorMessage()"
+      },
+      "keyword" : "Then "
+    } ],
+    "tags" : [ {
+      "name" : "@Smoke2"
+    }, {
+      "name" : "@Smoke"
+    } ]
+  } ],
+  "name" : "Login Into Application",
+  "description" : "",
+  "id" : "login-into-application",
+  "keyword" : "Feature",
+  "uri" : "file:src/test/resources/Features/login.feature",
+  "tags" : [ ]
+} ]

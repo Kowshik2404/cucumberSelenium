@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<testsuite errors="0" failures="0" name="io.cucumber.core.plugin.JUnitFormatter" skipped="0" tests="2" time="0.298">
+    <testcase classname="Login Into Application" name="To verify that user is able to login into Application with valid creds" time="0.024">
+        <system-out><![CDATA[Given I open the login page URL.............................................passed
+When I enter the username in username field.................................passed
+And I enter the password in password name field.............................passed
+And I click Login button....................................................passed
+Then I should be navigated to home page.....................................passed
+]]></system-out>
+    </testcase>
+    <testcase classname="Login Into Application" name="To verify that user should not able to login into Application with invalid creds" time="0.003">
+        <system-out><![CDATA[Given I open the login page URL.............................................passed
+When I enter the username in username field.................................passed
+And I enter the password in password name field.............................passed
+And I click Login button....................................................passed
+Then I should be able see error message.....................................passed
+]]></system-out>
+    </testcase>
+</testsuite>
