@@ -2,6 +2,8 @@ package Utils;
 
 import org.json.JSONObject;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementClickInterceptedException;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -33,7 +35,13 @@ public class PageUtil extends BaseClass {
 			element = driver.findElement(By.xpath(jsonObject.getJSONObject(platform).getString("xpath")));
 			break;
 		case "id":
-			element = driver.findElement(By.xpath(jsonObject.getJSONObject(platform).getString("id")));
+			element = driver.findElement(By.id(jsonObject.getJSONObject(platform).getString("id")));
+			break;
+		case "name":
+			element = driver.findElement(By.name(jsonObject.getJSONObject(platform).getString("name")));
+			break;
+		case "css":
+			element = driver.findElement(By.cssSelector(jsonObject.getJSONObject(platform).getString("css")));
 			break;
 		default:
 			break;
@@ -76,6 +84,15 @@ public class PageUtil extends BaseClass {
 		isDisplayedByLocator(By.xpath("//div[text()='Login Successfully']"), 5);
 		System.out.println("login complete");
 	}
+	
+	public static void waitForStoreCreation() {
+		System.out.println("Wait for processing");
+		isDisplayedByLocator(By.xpath("//div[text()='Processing']"), 5);
+		waitUntilDisappear(By.xpath("//div[text()='Processing']"), 10);
+		System.out.println("processing complete");
+		isDisplayedByLocator(By.xpath("//div[text()='Save Successfully']"), 5);
+		System.out.println("login complete");
+	}
 
 	public static void waitForLoadSpinner() throws InterruptedException {
 		System.out.println("chk for loadin");
@@ -88,4 +105,11 @@ public class PageUtil extends BaseClass {
 		// add timeout and catch NoSuchElementException
 	}
 
+	public static void clickElement(WebElement element) {
+		try {
+			element.click();
+		} catch (ElementClickInterceptedException error) {
+			((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
+		}
+	}
 }

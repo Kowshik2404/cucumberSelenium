@@ -3,6 +3,8 @@ package Utils;
 import java.util.HashMap;
 import java.util.Properties;
 
+import com.mifmif.common.regex.Generex;
+
 import io.cucumber.core.internal.com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Utils {
@@ -30,6 +32,12 @@ public class Utils {
 		mapping = objectMapper.convertValue(mapping.get(key), HashMap.class);
 
 		return mapping;
+	}
+	
+	public static String getRandomString(String regex, int length) {
+		Generex generex = new Generex(regex);
+		return generex.random(length);
+
 	}
 
 }

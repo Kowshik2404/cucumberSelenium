@@ -8,7 +8,6 @@ import org.openqa.selenium.support.PageFactory;
 import Base.BaseClass;
 import Pages.SuperAdmin.Dashboard.MenuOption;
 import Pages.SuperAdmin.Dashboard.SubMenuOption;
-import Utils.PageUtil;
 
 public class PageContainer extends BaseClass{
 	
@@ -31,7 +30,6 @@ public class PageContainer extends BaseClass{
 					By.xpath("//div[contains(@class,'MuiCollapse-entered')]//*[@title='" + submenu.getValue() + "']"));
 			subMenuElement.click();
 		}
-		PageUtil.waitForLoadSpinner();
 	}
 
 }
