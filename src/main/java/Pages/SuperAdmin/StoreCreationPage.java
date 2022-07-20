@@ -55,17 +55,19 @@ public class StoreCreationPage extends BaseClass {
 			e.printStackTrace();
 		}
 	}
+	
+	public void isEditStoreLoaded() throws InterruptedException {
+		PageUtil.isElementDisplayed(PageUtil.getElement(locators.getProperty("editStoreHeading"), LocatorType.XPATH, 10), 1);
+	}
 
 	public void enterMetaData(HashMap<String, String> metadata) {
 		if (metadata.get("storeName") != null)
-			PageUtil.getElement(locators.getProperty("storeName"), LocatorType.NAME, 3)
-					.sendKeys(Keys.chord(Keys.CONTROL, "a"), metadata.get("storeName"));
+			enterStoreName(metadata.get("storeName"));
 		if (metadata.get("storeKey") != null)
 			PageUtil.getElement(locators.getProperty("storeKey"), LocatorType.NAME, 3)
 					.sendKeys(Keys.chord(Keys.CONTROL, "a"), metadata.get("storeKey"));
 		if (metadata.get("storeMobile") != null)
-			PageUtil.getElement(locators.getProperty("storeMobile"), LocatorType.NAME, 3)
-					.sendKeys(Keys.chord(Keys.CONTROL, "a"), metadata.get("storeMobile"));
+			enterStoreMobile(metadata.get("storeMobile"));
 		if (metadata.get("storePhone") != null)
 			PageUtil.getElement(locators.getProperty("storePhone"), LocatorType.NAME, 3)
 					.sendKeys(Keys.chord(Keys.CONTROL, "a"), metadata.get("storePhone"));
@@ -163,5 +165,20 @@ public class StoreCreationPage extends BaseClass {
 		PageUtil.clickElement(submitButton);
 		PageUtil.waitForStoreCreation();
 	}
-
+	
+	public void updateStore() {
+		WebElement updateButton = PageUtil.getElement(locators.getProperty("updateButton"), LocatorType.XPATH, 3);
+		PageUtil.clickElement(updateButton);
+		PageUtil.waitForStoreCreation();
+	}
+	
+	public void enterStoreName(String storeName) {
+		PageUtil.getElement(locators.getProperty("storeName"), LocatorType.NAME, 3)
+		.sendKeys(Keys.chord(Keys.CONTROL, "a"), storeName);
+	}
+	
+	public void enterStoreMobile(String storeMobile) {
+		PageUtil.getElement(locators.getProperty("storeMobile"), LocatorType.NAME, 3)
+		.sendKeys(Keys.chord(Keys.CONTROL, "a"), storeMobile);
+	}
 }
