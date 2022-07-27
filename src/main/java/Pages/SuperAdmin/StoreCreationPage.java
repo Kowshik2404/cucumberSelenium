@@ -1,15 +1,23 @@
 package Pages.SuperAdmin;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
-
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+
 
 import Base.BaseClass;
 import Utils.PageUtil;
@@ -72,7 +80,7 @@ public class StoreCreationPage extends BaseClass {
 			PageUtil.getElement(locators.getProperty("storePhone"), LocatorType.NAME, 3)
 					.sendKeys(Keys.chord(Keys.CONTROL, "a"), metadata.get("storePhone"));
 		if (metadata.get("adminLoginId") != null)
-			PageUtil.getElement(locators.getProperty("adminLoginId"), LocatorType.NAME, 3)
+			PageUtil.getElement(locators.getProperty("adminLoginId"), LocatorType.XPATH, 3)
 					.sendKeys(Keys.chord(Keys.CONTROL, "a"), metadata.get("adminLoginId"));
 		if (metadata.get("adminPassword") != null)
 			PageUtil.getElement(locators.getProperty("adminPassword"), LocatorType.NAME, 3)
@@ -80,7 +88,7 @@ public class StoreCreationPage extends BaseClass {
 		if (metadata.get("aboutStore") != null)
 			PageUtil.getElement(locators.getProperty("aboutStore"), LocatorType.CSS, 3)
 					.sendKeys(Keys.chord(Keys.CONTROL, "a"), metadata.get("aboutStore"));
-		if (metadata.get("storeCountry") != null) {
+		/*if (metadata.get("storeCountry") != null) {
 			WebElement country = PageUtil.getElement(locators.getProperty("storeCountry"), LocatorType.XPATH, 3);
 			country.click();
 			country.sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
@@ -88,7 +96,7 @@ public class StoreCreationPage extends BaseClass {
 			PageUtil.getElement(
 					locators.getProperty("storeListing").replace("toReplace1", metadata.get("storeCountry")),
 					LocatorType.XPATH, 3).click();
-		}
+		}*/
 		if (metadata.get("storeCategory") != null) {
 			WebElement country = PageUtil.getElement(locators.getProperty("storeCategory"), LocatorType.XPATH, 3);
 			country.click();
@@ -109,7 +117,7 @@ public class StoreCreationPage extends BaseClass {
 			PageUtil.getElement(locators.getProperty("name"), LocatorType.NAME, 3)
 					.sendKeys(Keys.chord(Keys.CONTROL, "a"), contactDetails.get("name"));
 		if (contactDetails.get("email") != null)
-			PageUtil.getElement(locators.getProperty("email"), LocatorType.NAME, 3)
+			PageUtil.getElement(locators.getProperty("email"), LocatorType.XPATH, 3)
 					.sendKeys(Keys.chord(Keys.CONTROL, "a"), contactDetails.get("email"));
 		if (contactDetails.get("mobileNumber") != null)
 			PageUtil.getElement(locators.getProperty("mobileNumber"), LocatorType.NAME, 3)
@@ -123,6 +131,15 @@ public class StoreCreationPage extends BaseClass {
 		if (locationDetails.get("addressName") != null)
 			PageUtil.getElement(locators.getProperty("addressName"), LocatorType.NAME, 3)
 					.sendKeys(Keys.chord(Keys.CONTROL, "a"), locationDetails.get("addressName"));
+		if (locationDetails.get("searchPlace") != null) {
+
+			WebElement locatorSearch = PageUtil.getElement(locators.getProperty("locationSearch"), LocatorType.XPATH,
+					3);
+			locatorSearch.sendKeys(Keys.chord(Keys.CONTROL, "a"), locationDetails.get("searchPlace"));
+			Thread.sleep(2000);
+			locatorSearch.sendKeys(Keys.chord(Keys.ARROW_DOWN, Keys.ENTER));
+			PageUtil.getElement(locators.getProperty("getButton"), LocatorType.XPATH, 3).click();
+		}
 		if (locationDetails.get("address1") != null)
 			PageUtil.getElement(locators.getProperty("address1"), LocatorType.NAME, 3)
 					.sendKeys(Keys.chord(Keys.CONTROL, "a"), locationDetails.get("address1"));
@@ -131,7 +148,8 @@ public class StoreCreationPage extends BaseClass {
 			country.click();
 			country.sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
 			country.sendKeys(locationDetails.get("state"));
-			PageUtil.getElement(locators.getProperty("storeListing").replace("toReplace1", locationDetails.get("state")),
+			PageUtil.getElement(
+					locators.getProperty("storeListing").replace("toReplace1", locationDetails.get("state")),
 					LocatorType.XPATH, 3).click();
 		}
 		if (locationDetails.get("city") != null) {
@@ -147,23 +165,32 @@ public class StoreCreationPage extends BaseClass {
 			locality.click();
 			locality.sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
 			locality.sendKeys(locationDetails.get("locality"));
-			PageUtil.getElement(locators.getProperty("storeListing").replace("toReplace1", locationDetails.get("locality")),
+			PageUtil.getElement(
+					locators.getProperty("storeListing").replace("toReplace1", locationDetails.get("locality")),
 					LocatorType.XPATH, 3).click();
-		}
-		if (locationDetails.get("searchPlace") != null) {
-			
-			WebElement locatorSearch = PageUtil.getElement(locators.getProperty("locationSearch"), LocatorType.XPATH, 3);
-			locatorSearch.sendKeys(Keys.chord(Keys.CONTROL, "a"), locationDetails.get("searchPlace"));
-			Thread.sleep(1000);
-			locatorSearch.sendKeys(Keys.chord(Keys.ARROW_DOWN, Keys.ENTER));
-			PageUtil.getElement(locators.getProperty("getButton"), LocatorType.XPATH, 3).click();
 		}
 	}
 	
-	public void SubmitStore() {
+	public void SubmitStore(String storename) {
 		WebElement submitButton = PageUtil.getElement(locators.getProperty("submitButtons"), LocatorType.XPATH, 3);
 		PageUtil.clickElement(submitButton);
 		PageUtil.waitForStoreCreation();
+
+		try {
+			JSONParser parser = new JSONParser();
+			JSONObject json = (JSONObject) parser.parse(new FileReader(
+					System.getProperty("user.dir") + "\\src\\test\\resources\\runtimeData\\savedData.json"));
+			ArrayList<String> stores;
+			if (!json.containsKey("stores")) {
+				stores = new ArrayList<>();
+				stores.add(storename);
+				json.put("stores", stores);
+			}
+			Utils.writeToSavedData(json);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void updateStore() {

@@ -1,7 +1,15 @@
 package Utils;
 
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Properties;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import com.mifmif.common.regex.Generex;
 
@@ -38,6 +46,31 @@ public class Utils {
 		Generex generex = new Generex(regex);
 		return generex.random(length);
 
+	}
+	
+	public static void writeToSavedData(JSONObject json) {
+
+		FileWriter file;
+		try {
+			file = new FileWriter(
+					System.getProperty("user.dir") + "\\src\\test\\resources\\runtimeData\\savedData.json");
+			file.write(json.toJSONString());
+			file.flush();
+			file.close();
+		} catch (IOException e1) {
+		}
+	}
+	
+	public static JSONObject readSavedData() {
+
+		JSONObject jsonObject = null;
+		try {
+			JSONParser parser = new JSONParser();
+			jsonObject = (JSONObject) parser.parse(new FileReader(
+					System.getProperty("user.dir") + "\\src\\test\\resources\\runtimeData\\savedData.json"));
+		} catch (IOException | ParseException e) {
+		}
+		return jsonObject;
 	}
 
 }

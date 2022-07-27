@@ -1,10 +1,16 @@
 package Implementation;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Properties;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.junit.Assert;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -43,7 +49,7 @@ public class CreateStoreTest extends BaseClass {
 		password = user.get("password");
 		String timestamp = new SimpleDateFormat("ddmmss").format(new Date());
 		metadata.put("storeName", metadata.get("storeName") + timestamp);
-		metadata.put("adminLoginId", metadata.get("adminLoginId") + timestamp);
+		metadata.put("adminLoginId", timestamp + metadata.get("adminLoginId"));
 		metadata.put("storeKey", Utils.getRandomString("[A-Z]{2}[0-9]{3}", 5));
 		String mobileNum = Utils.getRandomString("[0-9]{10}", 10);
 		metadata.put("storeMobile", mobileNum);
@@ -68,6 +74,7 @@ public class CreateStoreTest extends BaseClass {
 
 	@When("User navigates Stores -> store creation")
 	public void navigateToCreateStore() throws Exception {
+		log.info("Navigate");
 		PageContainer container = new PageContainer();
 		container.selectMenuOption(MenuOption.STORES, SubMenuOption.STORECREATION);
 	}
@@ -80,7 +87,7 @@ public class CreateStoreTest extends BaseClass {
 		storeCreationPage.enterMetaData(metadata);
 		storeCreationPage.enterContactDetails(contactDetails);
 		storeCreationPage.enterLocationDetails(locationDetails);
-		storeCreationPage.SubmitStore();
+		storeCreationPage.SubmitStore(metadata.get("storeName"));
 	}
 
 	@Then("Create store should be listed in store listing")
@@ -138,7 +145,9 @@ public class CreateStoreTest extends BaseClass {
 	public void storeCatalogue() throws Exception {
 		StoreListPage storeListpage = new StoreListPage();
 		storeListpage.isStoreListLoaded();
-		storeListpage.performActionOnStore(metadata.get("storeName"), StoreActions.CATALOGUE);
+		JSONObject jsonObject = Utils.readSavedData();
+		JSONArray stores = (JSONArray)jsonObject.get("stores");
+		storeListpage.performActionOnStore(stores.get(0).toString(), StoreActions.CATALOGUE);
 		Assert.assertTrue("Check if store catalogue is Displayed. Store name : " + metadata.get("storeName"),
 				storeListpage.verifyIfStoreCatalgueIsDisplayed(metadata.get("storeName")));
 		
